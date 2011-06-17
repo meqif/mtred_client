@@ -10,6 +10,8 @@ import json
 import os
 import sys
 
+BASE_URL = 'https://www.mtred.com/api/user/key/'
+
 class Worker(object):
     """ Represents a single miner. """
 
@@ -18,14 +20,16 @@ class Worker(object):
         self.hashrate = float(worker_data['mhash'])
         self.solved_shares = int(worker_data['rsolved'])
 
-class MtRed(object):
-    """ Data received from the pool. """
+def retrieve_data(api_key):
+    """ Retrieve data from the pool and convert it to a dict. """
+    return json.load(urllib.urlopen(BASE_URL + api_key))
 
-    BASE_URL = 'https://www.mtred.com/api/user/key/'
+class MtRed(object):
+    """ The client stats from the pool. """
+
     BLOCK_REWARD = 50  # will change in the future
 
-    def __init__(self, api_key):
-        data = json.load(urllib.urlopen(self.BASE_URL + api_key))
+    def __init__(self, data):
         self.balance = float(data['balance'])
         self.solved_shares = int(data['rsolved'])
         self.total_shares = int(data['server']['roundshares'])
@@ -52,7 +56,7 @@ def main():
         print "Usage: %s [API key]" % sys.argv[0]
 
     else:
-        client = MtRed(sys.argv[1])
+        client = MtRed(retrieve_data(sys.argv[1]))
         print "Balance: %d BTC%s" \
               "Estimated reward: %f BTC%s" \
               "Aggregate hashrate: %.2f Mhash/s" % (
