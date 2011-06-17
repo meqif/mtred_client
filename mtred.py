@@ -60,7 +60,6 @@ class MtRed(object):
 def main():
     if len(sys.argv) != 2:
         print "Usage: %s [API key]" % sys.argv[0]
-
     else:
         client = MtRed(retrieve_data(sys.argv[1]))
         print "Balance: %d BTC%s" \
