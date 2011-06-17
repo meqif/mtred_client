@@ -16,7 +16,6 @@ EXAMPLE_DATA = [
     {"balance":"1.23456789","rsolved":"145","server":{"hashrate":150467.02093653,"workers":626,"roundshares":304965,"foundblock":0},"workers":{"my_miner":{"rsolved":"54","mhash":666.6},"my_other_miner":{"rsolved":"91","mhash":300.4}}}
 ]
 
-
 INVALID_KEY = {"error":"Invalid Key"}
 
 class TestWorker:
