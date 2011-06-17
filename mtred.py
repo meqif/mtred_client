@@ -20,6 +20,9 @@ class Worker(object):
         self.hashrate = float(worker_data['mhash'])
         self.solved_shares = int(worker_data['rsolved'])
 
+class MtRedError(ValueError):
+    pass
+
 def retrieve_data(api_key):
     """ Retrieve data from the pool and convert it to a dict. """
     return json.load(urllib.urlopen(BASE_URL + api_key))
@@ -30,6 +33,9 @@ class MtRed(object):
     BLOCK_REWARD = 50  # will change in the future
 
     def __init__(self, data):
+        if data.has_key('error'):
+            raise MtRedError, data['error']
+
         self.balance = float(data['balance'])
         self.solved_shares = int(data['rsolved'])
         self.total_shares = int(data['server']['roundshares'])
