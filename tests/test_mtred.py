@@ -13,14 +13,42 @@ EXAMPLE_DATA = [
     {"balance":"0.00000000","rsolved":"0","server":{"hashrate":150467.02093653,"workers":626,"roundshares":304965,"foundblock":0},"workers":{"my_miner":{"rsolved":"0","mhash":0}}},
     {"balance":"0.00000000","rsolved":"0","server":{"hashrate":150467.02093653,"workers":626,"roundshares":304965,"foundblock":0},"workers":{}},
     {"balance":"1.23456789","rsolved":"54","server":{"hashrate":150467.02093653,"workers":626,"roundshares":304965,"foundblock":0},"workers":{"my_miner":{"rsolved":"54","mhash":666.6}}},
-    {"balance":"1.23456789","rsolved":"145","server":{"hashrate":150467.02093653,"workers":626,"roundshares":304965,"foundblock":0},"workers":{"my_miner":{"rsolved":"54","mhash":666.6},"my_miner_2":{"rsolved":"91","mhash":300.4}}}
+    {"balance":"1.23456789","rsolved":"145","server":{"hashrate":150467.02093653,"workers":626,"roundshares":304965,"foundblock":0},"workers":{"my_miner":{"rsolved":"54","mhash":666.6},"my_other_miner":{"rsolved":"91","mhash":300.4}}}
 ]
 
 
 INVALID_KEY = {"error":"Invalid Key"}
 
 class TestWorker:
-    pass
+
+    def test_inactive_worker(self):
+        miner = [Worker(name,d) for name,d in
+                EXAMPLE_DATA[0]['workers'].items()][0]
+
+        assert_equal(miner.name, "my_miner")
+        assert_equal(miner.hashrate, 0)
+        assert_equal(miner.solved_shares, 0)
+
+    def test_single_active_worker(self):
+        miner = [Worker(name,d) for name,d in
+                EXAMPLE_DATA[2]['workers'].items()][0]
+
+        assert_equal(miner.name, "my_miner")
+        assert_equal(miner.hashrate, 666.6)
+        assert_equal(miner.solved_shares, 54)
+
+    def test_two_active_workers(self):
+        miners = [Worker(name,d) for name,d in
+                EXAMPLE_DATA[3]['workers'].items()]
+        miners = sorted(miners, key=lambda miner: miner.name)
+
+        assert_equal(miners[0].name, "my_miner")
+        assert_equal(miners[0].hashrate, 666.6)
+        assert_equal(miners[0].solved_shares, 54)
+
+        assert_equal(miners[1].name, "my_other_miner")
+        assert_equal(miners[1].hashrate, 300.4)
+        assert_equal(miners[1].solved_shares, 91)
 
 class TestMtRed:
 
