@@ -7,7 +7,7 @@
 
 from nose.tools import *
 
-from mtred import Worker, MtRed, MtRedError
+from mtred import Server, Worker, MtRed, MtRedError
 
 EXAMPLE_DATA = [
     {"balance":"0.00000000","rsolved":"0","server":{"hashrate":150467.02093653,"workers":626,"roundshares":304965,"foundblock":0},"workers":{"my_miner":{"rsolved":"0","mhash":0}}},
@@ -17,6 +17,16 @@ EXAMPLE_DATA = [
 ]
 
 INVALID_KEY = {"error":"Invalid Key"}
+
+class TestServer:
+
+  def test_example(self):
+    server = Server(EXAMPLE_DATA[0]['server'])
+
+    assert_equal(server.hashrate, 150467.02093653)
+    assert_equal(server.workers, 626)
+    assert_equal(server.round_shares, 304965)
+    assert_equal(server.found_block, 0)
 
 class TestWorker:
 
