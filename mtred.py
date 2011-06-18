@@ -5,12 +5,16 @@
 # Licensed under the MIT License.
 # http://www.opensource.org/licenses/mit-license.php
 
-import urllib
 import json
 import os
 import sys
+import urllib
 
 BASE_URL = 'https://www.mtred.com/api/user/key/'
+
+def retrieve_data(api_key):
+    """ Retrieve data from the pool and convert it to a dict. """
+    return json.load(urllib.urlopen(BASE_URL + api_key))
 
 class Worker(object):
     """ Represents a single miner. """
@@ -22,10 +26,6 @@ class Worker(object):
 
 class MtRedError(ValueError):
     pass
-
-def retrieve_data(api_key):
-    """ Retrieve data from the pool and convert it to a dict. """
-    return json.load(urllib.urlopen(BASE_URL + api_key))
 
 class MtRed(object):
     """ The client stats from the pool. """
