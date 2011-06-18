@@ -16,6 +16,15 @@ def retrieve_data(api_key):
     """ Retrieve data from the pool and convert it to a dict. """
     return json.load(urllib.urlopen(BASE_URL + api_key))
 
+class Server(object):
+    """ Represents the pool server. """
+
+    def __init__(self, data):
+        self.hashrate = data['hashrate']
+        self.workers = data['workers']
+        self.round_shares = data['roundshares']
+        self.found_block = data['foundblock']
+
 class Worker(object):
     """ Represents a single miner. """
 
@@ -40,6 +49,7 @@ class MtRed(object):
         self.solved_shares = int(data['rsolved'])
         self.total_shares = int(data['server']['roundshares'])
         self.workers = [Worker(name,w) for name,w in data['workers'].items()]
+        self.server = Server(data['server'])
 
     @property
     def percent_share(self):
