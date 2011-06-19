@@ -72,8 +72,8 @@ def main():
         print "Usage: %s [API key]" % sys.argv[0]
     else:
         client = MtRed(retrieve_data(sys.argv[1]))
-        print "Balance: %f BTC%s" \
-              "Estimated reward: %f BTC%s" \
+        print "Balance: %.8f BTC%s" \
+              "Estimated reward: %.8f BTC%s" \
               "Aggregate hashrate: %.2f Mhash/s" % (
                 client.balance,
                 os.linesep,
