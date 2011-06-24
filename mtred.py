@@ -12,9 +12,11 @@ import urllib
 
 BASE_URL = 'https://www.mtred.com/api/user/key/'
 
+
 def retrieve_data(api_key):
     """ Retrieve data from the pool and convert it to a dict. """
     return json.load(urllib.urlopen(BASE_URL + api_key))
+
 
 class Server(object):
     """ Represents the pool server. """
@@ -25,6 +27,7 @@ class Server(object):
         self.round_shares = data['roundshares']
         self.found_block = data['foundblock']
 
+
 class Worker(object):
     """ Represents a single miner. """
 
@@ -33,8 +36,10 @@ class Worker(object):
         self.hashrate = float(worker_data['mhash'])
         self.solved_shares = int(worker_data['rsolved'])
 
+
 class MtRedError(ValueError):
     pass
+
 
 class MtRed(object):
     """ The client stats from the pool. """
@@ -42,13 +47,13 @@ class MtRed(object):
     BLOCK_REWARD = 50  # will change in the future
 
     def __init__(self, data):
-        if data.has_key('error'):
-            raise MtRedError, data['error']
+        if 'error' in data:
+            raise MtRedError(data['error'])
 
         self.balance = float(data['balance'])
         self.solved_shares = int(data['rsolved'])
         self.total_shares = int(data['server']['roundshares'])
-        self.workers = [Worker(name,w) for name,w in data['workers'].items()]
+        self.workers = [Worker(name, w) for name, w in data['workers'].items()]
         self.server = Server(data['server'])
 
     @property
@@ -66,6 +71,7 @@ class MtRed(object):
     def aggregate_hashrate(self):
         """ Returns the aggregate hashrate of the owned miners. """
         return reduce(lambda x, y: x + y.hashrate, self.workers, 0)
+
 
 def main():
     if len(sys.argv) != 2:

@@ -25,13 +25,14 @@ def getWorkers(data):
 
 class TestServer:
 
-  def test_example(self):
-    server = Server(EXAMPLE_DATA[0]['server'])
+    def test_example(self):
+        server = Server(EXAMPLE_DATA[0]['server'])
 
-    assert_equal(server.hashrate, 150467.02093653)
-    assert_equal(server.workers, 626)
-    assert_equal(server.round_shares, 304965)
-    assert_equal(server.found_block, 0)
+        assert_equal(server.hashrate, 150467.02093653)
+        assert_equal(server.workers, 626)
+        assert_equal(server.round_shares, 304965)
+        assert_equal(server.found_block, 0)
+
 
 class TestWorker:
 
@@ -60,6 +61,7 @@ class TestWorker:
         assert_equal(miners[1].name, "my_other_miner")
         assert_equal(miners[1].hashrate, 300.4)
         assert_equal(miners[1].solved_shares, 91)
+
 
 class TestMtRed:
 
@@ -90,16 +92,17 @@ class TestMtRed:
 
         assert_equal(client.balance, 1.23456789)
         assert_equal(client.solved_shares, 54)
-        assert_equal(client.percent_share, 54 * 1.0/304965)
-        assert_almost_equal(client.estimated_reward, MtRed.BLOCK_REWARD * 54*1.0/304965)
+        assert_equal(client.percent_share, 54 * 1.0 / 304965)
+        assert_almost_equal(client.estimated_reward,
+                MtRed.BLOCK_REWARD * 54 * 1.0 / 304965)
         assert_equal(client.aggregate_hashrate, 666.6)
 
     def test_active_client_two_miners(self):
         client = MtRed(EXAMPLE_DATA[3])
 
         assert_equal(client.balance, 1.23456789)
-        assert_equal(client.solved_shares, 54+91)
-        assert_equal(client.percent_share, (54+91) * 1.0/304965)
-        assert_almost_equal(client.estimated_reward, MtRed.BLOCK_REWARD * (54+91)*1.0/304965)
-        assert_equal(client.aggregate_hashrate, 666.6+300.4)
-
+        assert_equal(client.solved_shares, 54 + 91)
+        assert_equal(client.percent_share, (54 + 91) * 1.0 / 304965)
+        assert_almost_equal(client.estimated_reward,
+                MtRed.BLOCK_REWARD * (54 + 91) * 1.0 / 304965)
+        assert_equal(client.aggregate_hashrate, 666.6 + 300.4)
