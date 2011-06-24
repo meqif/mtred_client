@@ -18,6 +18,11 @@ EXAMPLE_DATA = [
 
 INVALID_KEY = {"error":"Invalid Key"}
 
+
+def getWorkers(data):
+    return [Worker(name, d) for name, d in data['workers'].items()]
+
+
 class TestServer:
 
   def test_example(self):
@@ -31,24 +36,21 @@ class TestServer:
 class TestWorker:
 
     def test_inactive_worker(self):
-        miner = [Worker(name,d) for name,d in
-                EXAMPLE_DATA[0]['workers'].items()][0]
+        miner = getWorkers(EXAMPLE_DATA[0])[0]
 
         assert_equal(miner.name, "my_miner")
         assert_equal(miner.hashrate, 0)
         assert_equal(miner.solved_shares, 0)
 
     def test_single_active_worker(self):
-        miner = [Worker(name,d) for name,d in
-                EXAMPLE_DATA[2]['workers'].items()][0]
+        miner = getWorkers(EXAMPLE_DATA[2])[0]
 
         assert_equal(miner.name, "my_miner")
         assert_equal(miner.hashrate, 666.6)
         assert_equal(miner.solved_shares, 54)
 
     def test_two_active_workers(self):
-        miners = [Worker(name,d) for name,d in
-                EXAMPLE_DATA[3]['workers'].items()]
+        miners = getWorkers(EXAMPLE_DATA[3])
         miners = sorted(miners, key=lambda miner: miner.name)
 
         assert_equal(miners[0].name, "my_miner")
